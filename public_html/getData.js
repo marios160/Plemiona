@@ -1,6 +1,6 @@
 //wyswietlanie danych
 javascript:{
-    alert(sessionStorage.getItem('dane'));
-    sessionStorage.removeItem('dane')
+    alert(sessionStorage.getItem('data'));
+    sessionStorage.removeItem('data')
 }
 ;
