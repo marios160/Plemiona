@@ -1,8 +1,8 @@
 javascript:{
-    if(!window.location.href.includes("members_troops") && !window.location.href.includes("members_buildings")){
+    if (!window.location.href.includes("members_troops") && !window.location.href.includes("members_buildings")) {
         sessionStorage.removeItem('data');
         var ask = confirm("Jeśli chcesz pobrać wojska kliknik 'ok', jeśli budynki klinkij 'Anuluj'");
-        if(ask){
+        if (ask) {
             window.location.href = "https://pl160.plemiona.pl/game.php?screen=ally&mode=members_troops";
         } else {
             window.location.href = "https://pl160.plemiona.pl/game.php?screen=ally&mode=members_buildings";
@@ -28,7 +28,11 @@ javascript:{
                 break;
         }
         for (var i = 1; i < row.length - offset; i++) {
-            copy = copy + row[i].innerText + " \t";
+            if (tab[1].innerText == "Budynki" && i == 1) {
+                copy = copy + row[i].innerText.replace('.', '') + " \t";
+            } else {
+                copy = copy + row[i].innerText + " \t";
+            }
         }
         ;
         copy = copy.substring(0, copy.length - 2);
