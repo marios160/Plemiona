@@ -13,7 +13,6 @@ javascript:{
         document.getElementsByName('player_id')[0].options.selectedIndex = document.getElementsByName('player_id')[0].options.selectedIndex + 1;
         document.getElementsByName('player_id')[0].onchange();
     } else {
-        var row = table[0].children[0].children[1].children;
         var copy = "";
         var tab = document.getElementsByClassName('selected');
         var offset = 0;
@@ -27,20 +26,24 @@ javascript:{
             default:
                 break;
         }
-        for (var i = 1; i < row.length - offset; i++) {
-            if (tab[1].innerText == "Budynki" && i == 1) {
-                copy = copy + row[i].innerText.replace('.', '') + " \t";
-            } else {
-                copy = copy + row[i].innerText + " \t";
+        for (var j = 1; j < table[0].children[0].children.length; j++) {
+            var row = table[0].children[0].children[j].children;
+            for (var i = 1; i < row.length - offset; i++) {
+                if (tab[1].innerText == "Budynki" && i == 1) {
+                    copy = copy + row[i].innerText.replace('.', '') + " \t";
+                } else {
+                    copy = copy + row[i].innerText + " \t";
+                }
             }
+            copy = copy.substring(0, copy.length - 2);
+            copy = copy + '\r\n';
         }
-        ;
-        copy = copy.substring(0, copy.length - 2);
+
         var data = sessionStorage.getItem('data');
         if (data == null) {
             sessionStorage.setItem('data', copy);
         } else {
-            sessionStorage.setItem('data', data + '\r\n' + copy);
+            sessionStorage.setItem('data', data + copy);
         }
         var select = document.getElementsByName('player_id')[0];
         var index = select.options.selectedIndex;
