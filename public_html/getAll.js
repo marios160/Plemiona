@@ -77,7 +77,13 @@ javascript:{
             for (var i = 0; i < buildings.length; i++) {
                 copy = copy + buildings[i].join(" \t") + " \t" + army[i].join(" \t") + "\r\n";
             }
-            alert(copy);
+
+            var x = document.createElement("TEXTAREA");
+            x.value = copy;
+            x.rows = 10;
+            x.cols = 50;
+            var div = document.getElementById("ds_body");
+            div.appendChild(x);
             sessionStorage.removeItem('buildings');
             sessionStorage.removeItem('army');
         } else {
