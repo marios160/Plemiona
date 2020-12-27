@@ -18,13 +18,13 @@ javascript:{
         var buildings = JSON.parse(sessionStorage.getItem('buildings'));
         var army = JSON.parse(sessionStorage.getItem('army'));
         var tab = document.getElementsByClassName('selected');
-        var offset = 0;
+        var length = 0;
         switch (tab[1].innerText) {
             case "Wojska":
-                offset = 3;
+                length = 11;
                 break;
             case "Budynki":
-                offset = 0;
+                length = 19;
                 break;
             default:
                 break;
@@ -32,10 +32,10 @@ javascript:{
         for (var j = 1; j < table[0].children[0].children.length; j++) {
             var row = table[0].children[0].children[j].children;
             var dataRow = [];
-            if (tab[1].innerText == "Budynki"){
+            if (tab[1].innerText == "Budynki") {
                 dataRow.push(document.getElementsByName('player_id')[0].options[document.getElementsByName('player_id')[0].options.selectedIndex].innerText);
             }
-            for (var i = 0; i < row.length - offset; i++) {
+            for (var i = 0; i < length; i++) {
                 if (tab[1].innerText == "Budynki") {
                     if (i == 0) {
                         dataRow.push(row[i].innerText.match(/\(\d{1,3}\|\d{1,3}\)/)[0].replace('(', '').replace(')', ''));
@@ -50,15 +50,15 @@ javascript:{
                     }
                 }
             }
-            
-            
+
+
             if (tab[1].innerText == "Budynki") {
                 buildings.push(dataRow);
             } else if (tab[1].innerText == "Wojska") {
                 dataRow.push(document.getElementsByName('player_id')[0].options[document.getElementsByName('player_id')[0].options.selectedIndex].value);
                 dataRow.push('');
                 var date = new Date();
-                dataRow.push(date.getFullYear() + "-" + ("0" + (date.getMonth()+1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2));
+                dataRow.push(date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2));
                 dataRow.push(("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" + ("0" + date.getSeconds()).slice(-2));
                 army.push(dataRow);
             }
@@ -90,6 +90,23 @@ javascript:{
             do {
                 index = index + 1;
                 select.options.selectedIndex = index;
+                if (select.options[index].text.includes('(brak dostępu)')) {
+                    if (tab[1].innerText == "Budynki") {
+                        var name = document.getElementsByName('player_id')[0].options[document.getElementsByName('player_id')[0].options.selectedIndex].innerText.replace(' (brak dostępu)','');
+                        buildings.push([name,'-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-']);
+                    } else if (tab[1].innerText == "Wojska") {
+                        var dataRow = [];
+                        dataRow.push('-','-','-','-','-','-','-','-','-','-');
+                        dataRow.push(document.getElementsByName('player_id')[0].options[document.getElementsByName('player_id')[0].options.selectedIndex].value);
+                        dataRow.push('');
+                        var date = new Date();
+                        dataRow.push(date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2));
+                        dataRow.push(("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" + ("0" + date.getSeconds()).slice(-2));
+                        army.push(dataRow);
+                    }
+                    sessionStorage.setItem('buildings', JSON.stringify(buildings));
+                    sessionStorage.setItem('army', JSON.stringify(army));
+                }
             } while (select.options[index].text.includes('(brak dostępu)'));
             select.onchange();
         }
