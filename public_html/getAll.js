@@ -32,9 +32,8 @@ javascript:{
         for (var j = 1; j < table[0].children[0].children.length; j++) {
             var row = table[0].children[0].children[j].children;
             var dataRow = [];
-            if (tab[1].innerText == "Budynki") {
-                dataRow.push(document.getElementsByName('player_id')[0].options[document.getElementsByName('player_id')[0].options.selectedIndex].innerText);
-            }
+            var name = document.getElementsByName('player_id')[0].options[document.getElementsByName('player_id')[0].options.selectedIndex].innerText;
+            dataRow.push(name);
             for (var i = 0; i < length; i++) {
                 if (tab[1].innerText == "Budynki") {
                     if (i == 0) {
@@ -75,6 +74,23 @@ javascript:{
         } else if (index == select.length - 1 && window.location.href.includes("members_troops")) {
             var copy = "";
             for (var i = 0; i < buildings.length; i++) {
+                if (buildings[i][0] != army[i][0]) {
+                    if (buildings[i - 1][0] == army[i][0]) {
+                        buildings.splice(i, 0, [army[i][0], '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']);
+                    } else if (army[i - 1][0] == buildings[i][0]) {
+                        var dataRow = [];
+                        dataRow.push(buildings[i][0],'-', '-', '-', '-', '-', '-', '-', '-', '-', '-');
+                        dataRow.push(document.getElementsByName('player_id')[0].options[document.getElementsByName('player_id')[0].options.selectedIndex].value);
+                        dataRow.push('');
+                        var date = new Date();
+                        dataRow.push(date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2));
+                        dataRow.push(("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" + ("0" + date.getSeconds()).slice(-2));
+                        army.splice(i,0,dataRow);
+                    }
+                }
+            }
+            for (var i = 0; i < buildings.length; i++) {
+                army[i].shift();
                 copy = copy + buildings[i].join(" \t") + " \t" + army[i].join(" \t") + "\r\n";
             }
 
@@ -91,12 +107,12 @@ javascript:{
                 index = index + 1;
                 select.options.selectedIndex = index;
                 if (select.options[index].text.includes('(brak dostępu)')) {
+                    var name = document.getElementsByName('player_id')[0].options[document.getElementsByName('player_id')[0].options.selectedIndex].innerText.replace(' (brak dostępu)', '');
                     if (tab[1].innerText == "Budynki") {
-                        var name = document.getElementsByName('player_id')[0].options[document.getElementsByName('player_id')[0].options.selectedIndex].innerText.replace(' (brak dostępu)','');
-                        buildings.push([name,'-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-','-']);
+                        buildings.push([name, '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']);
                     } else if (tab[1].innerText == "Wojska") {
                         var dataRow = [];
-                        dataRow.push('-','-','-','-','-','-','-','-','-','-');
+                        dataRow.push(name,'-', '-', '-', '-', '-', '-', '-', '-', '-', '-');
                         dataRow.push(document.getElementsByName('player_id')[0].options[document.getElementsByName('player_id')[0].options.selectedIndex].value);
                         dataRow.push('');
                         var date = new Date();
